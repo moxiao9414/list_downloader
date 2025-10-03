@@ -50,7 +50,7 @@ while True:
             else:
                 console.print("[red]输入错误，再试一次[/red]")
         if err.startswith("vpn"):
-            err = None
+            err = "nomal"
             continue
         else:
             os.system(f"aria2c -j 16 {url}")
@@ -90,7 +90,7 @@ while True:
                 else:
                     console.print("[red]输入错误，再试一次[/red]")
             if err.startswith("vpn"):
-                err = None
+                err = "nomal"
                 continue
             else:        
                 for list_number in list_number_list:
@@ -98,3 +98,4 @@ while True:
                     os.system(f"aria2c -j 16 {url}")
                     console.print(f"[green]清单{list_number}下载完成[/green]")
                 break
+
