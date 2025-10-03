@@ -32,13 +32,17 @@ while True:
             list_number = IntPrompt.ask("请输入清单")
             if list_number:
                 console.print("[green]开始检测[/green]...")
-                url = f"https://github.com/SteamAutoCracks/ManifestHub/archive/refs/heads/{list_number}.zip"
-                response = requests.get(url)
-                if response.status_code == 200:
-                        console.print("[green]清单存在[/green]")
-                        break
-                else:
-                        console.print("[red]清单不存在[/red]")
+                try:
+                    url = f"https://github.com/SteamAutoCracks/ManifestHub/archive/refs/heads/{list_number}.zip"
+                    response = requests.get(url)
+                    if response.status_code == 200:
+                            console.print("[green]清单存在[/green]")
+                            break
+                    else:
+                            console.print("[red]清单不存在[/red]")
+                except Exception:
+                    console.print("[red]请关闭加速器再试一次[/red]")
+                    break            
             else:
                 console.print("[red]输入错误，再试一次[/red]")
         os.system(f"aria2c -j 16 {url}")
@@ -58,16 +62,20 @@ while True:
                         continue
                     elif confirm == "n":
                         console.print("[green]开始检测[/green]...")
-                        for list_number in list_number_list:
-                            url = f"https://github.com/SteamAutoCracks/ManifestHub/archive/refs/heads/{list_number}.zip"
-                            response = requests.get(url)
-                            if response.status_code == 200:
-                                console.print(f"[green]清单{list_number}存在[/green]")
-                            else:
-                                console.print(f"[red]清单{list_number}不存在[/red]")
-                                list_number_list.remove(list_number)
-                                console.print(f"[red]清单{list_number}已从列表中移除[/red]")
-                        break
+                        try:
+                            for list_number in list_number_list:
+                                url = f"https://github.com/SteamAutoCracks/ManifestHub/archive/refs/heads/{list_number}.zip"
+                                response = requests.get(url)
+                                if response.status_code == 200:
+                                    console.print(f"[green]清单{list_number}存在[/green]")
+                                else:
+                                    console.print(f"[red]清单{list_number}不存在[/red]")
+                                    list_number_list.remove(list_number)
+                                    console.print(f"[red]清单{list_number}已从列表中移除[/red]")
+                            break
+                        except Exception:
+                            console.print("[red]请关闭加速器再试一次[/red]")
+                            break
                     else:
                         console.print("[red]输入错误，再试一次[/red]")
                 else:
