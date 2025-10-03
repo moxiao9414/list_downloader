@@ -8,6 +8,9 @@ from rich.prompt import Prompt, IntPrompt
 #创建终端示例
 console = Console()
 
+#创建错误变量
+err = "nomal"
+
 #创建表格
 table = Table(Column(header="检测时请不要开加速器！！！", justify="center"),
               show_header=True, 
@@ -41,13 +44,18 @@ while True:
                     else:
                             console.print("[red]清单不存在[/red]")
                 except Exception:
-                    console.print("[red]请关闭加速器再试一次[/red]")
+                    console.print("[red]请关闭加速器再试一次[/red]\n\n")
+                    err = "vpn"
                     break            
             else:
                 console.print("[red]输入错误，再试一次[/red]")
-        os.system(f"aria2c -j 16 {url}")
-        console.print(f"[green]清单{list_number}下载完成[/green]")
-        break
+        if err.startswith("vpn"):
+            err = None
+            continue
+        else:
+            os.system(f"aria2c -j 16 {url}")
+            console.print(f"[green]清单{list_number}下载完成[/green]")
+            break
     elif choice == "2":
         #下载多清单实现
         list_number_list = []
@@ -74,14 +82,19 @@ while True:
                                     console.print(f"[red]清单{list_number}已从列表中移除[/red]")
                             break
                         except Exception:
-                            console.print("[red]请关闭加速器再试一次[/red]")
+                            console.print("[red]请关闭加速器再试一次[/red]\n\n")
+                            err = "vpn"
                             break
                     else:
                         console.print("[red]输入错误，再试一次[/red]")
                 else:
                     console.print("[red]输入错误，再试一次[/red]")
-            for list_number in list_number_list:
-                url = f"https://github.com/SteamAutoCracks/ManifestHub/archive/refs/heads/{list_number}.zip "  
-                os.system(f"aria2c -j 16 {url}")
-                console.print(f"[green]清单{list_number}下载完成[/green]")
-            break
+            if err.startswith("vpn"):
+                err = None
+                continue
+            else:        
+                for list_number in list_number_list:
+                    url = f"https://github.com/SteamAutoCracks/ManifestHub/archive/refs/heads/{list_number}.zip "  
+                    os.system(f"aria2c -j 16 {url}")
+                    console.print(f"[green]清单{list_number}下载完成[/green]")
+                break
